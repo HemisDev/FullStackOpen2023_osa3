@@ -2,6 +2,12 @@ const express = require('express')
 const app = express()
 
 app.use(express.json())
+var morgan = require('morgan')
+
+morgan.token('bodyMessage',(req,res) => {  
+  return JSON.stringify(req.body);
+})
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :bodyMessage'))
 
 const PORT = 3001
 app.listen(PORT, () => {
@@ -77,10 +83,8 @@ app.post('/api/persons', (request, response) => {
       error: 'name duplicates are not allowed!'
     })  
   }
-  const person = CreateNewPerson(body)
-  
+  const person = CreateNewPerson(body)  
   persons = persons.concat(person)
-
   response.json(person)
 })
 
