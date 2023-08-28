@@ -24,7 +24,14 @@ const contactSchema = new mongoose.Schema({
     phone: {
       type:String,
       minlength:8,
-      required:true
+      
+      validate: {
+        validator: function(pnum) {
+          return /^\d{2,3}-\d{7,8}/.test(pnum);
+        },
+        message: props => `${props.value} is not a valid phone number`
+      },
+      required:[true, 'nimen kanssa on oltava puhelinnumero'],
     }
   })
 
